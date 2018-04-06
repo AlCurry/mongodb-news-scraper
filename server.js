@@ -26,31 +26,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
-// By default mongoose uses callbacks for async queries, we're setting it to use promises (.then syntax) instead
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/berlinMongo";
+
+// Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/berlin", {
+mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
 // Routes
-
-app.get("/", (req, res) => {
-  console.log("Home");
-/*   db.Headline.find({})
-      .then((data) => {
-          dbHeadlines = {
-              headlines: data
-          }
-          res.render('home', dbHeadlines);
-      })
-      .catch((err) => {
-          res.json(err);
-      }); */
-  console.log("end HOme");
-});
-// A GET route for scraping the website
-//app.get("/scrape", function (req, res) {
 
   app.get("/scrape", function (req, res) {
     console.log("this route");
@@ -89,14 +75,12 @@ app.get("/", (req, res) => {
           });  
         console.log(i);
         // exit .each when 20 articles are processed
-        if (i === 9) return false;
+        if (i === 19) return false;
   
         //res.send(result);
       });
   
-      //res.send(result);
-      // If we were able to successfully scrape and save an Article, send a message to the client
-      res.send("Scrape Complete");
+      res.send("scraping done");
     });
   });
 
@@ -135,9 +119,6 @@ app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(function(dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
     .then(function(dbArticle) {
