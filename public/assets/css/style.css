@@ -1,0 +1,57 @@
+body { background-color: rgba(197, 173, 16, 0.747); 
+  font-family: "FrutigerNextLT-Regular",Verdana,Arial,Helvetica,sans-serif;
+  font-family: 'Abel', sans-serif;
+  font-weight: normal;
+  letter-spacing: .5px;
+  text-transform: none;
+}
+
+a {
+  font-size: 12px;
+}
+a:link {
+  color: black;
+}
+a:visited {
+  color:  #333;
+}
+a:hover {
+  color: red;
+}
+.summary {
+  font-size: 14px;
+}
+.title {
+  font-family: Georgia,serif;
+}
+#logo {
+  height: 50px;
+}
+#savenote {
+  background-color: rgba(197, 173, 16, 0.747); 
+}
+#articles {
+  /* display: inline-block; */
+  overflow: auto;
+  /* width: 60%;
+    height: 700px; */
+  height: 60%;
+}
+#notes {
+  float: left;
+  /* width: 30%; */
+  height: 20%;
+}
+textarea, input {
+  display: block; 
+  width: 100%;
+  background-color: rgba(197, 173, 16, 0.747);
+}
+input {
+  height: 20px;
+  font-size: 16px;
+}
+textarea {
+  height: 150px;
+  font-size: 16px;
+}
